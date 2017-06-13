@@ -1,0 +1,3 @@
+如果是主窗口，就使用 QMainWindow；如果是对话框，就是用 QDialog；如果不确定，或有可能作为顶级窗口，也有可能嵌入到其他窗口中，那么使用 QWidget。 需要注意的是，窗口和控件都继承自 QWidget，如果不为控件指定父对象，它就会被作为窗口处理，这时 setWindowTitle() 和 setWindowIcon() 函数就会生效。
+
+
