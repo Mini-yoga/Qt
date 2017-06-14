@@ -8,6 +8,8 @@
 #include <QString>
 #include <QTextStream>
 #include <QDir>
+#include <QFileDialog>
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -24,22 +26,27 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_clicked()
 {
 
-    QDirIterator dirIterator("/Users/MiniYoga/Documents/QT/Qt/2017_6_12_Note/text/",QDirIterator::Subdirectories);
-    QStringList fileList;
-    while (dirIterator.hasNext()) {
-        dirIterator.next();
-        QFileInfo Info = dirIterator.fileInfo();
-        if(Info.isFile()){
-            //qDebug()<<dirIterator.fileName();
-            fileList.append(dirIterator.path()+dirIterator.fileName());
-        }
+//    QDirIterator dirIterator("/Users/MiniYoga/Documents/QT/Qt/2017_6_12_Note/text/",QDirIterator::Subdirectories);
+//    QStringList fileList;
+//    while (dirIterator.hasNext()) {
+//        dirIterator.next();
+//        QFileInfo Info = dirIterator.fileInfo();
+//        if(Info.isFile()){
+//            //qDebug()<<dirIterator.fileName();
+//            fileList.append(dirIterator.path()+dirIterator.fileName());
+//        }
 
-    }
+//    }
+//    sonWindow *fileQw = new sonWindow();
+//    fileQw->listWindow(fileList);
+//    fileQw->show();
+//    connect(fileQw, SIGNAL(sendData(QString)),this, SLOT(on_listView_receivedData(QString)));
 
-    sonWindow *fileQw = new sonWindow();
-    fileQw->listWindow(fileList);
-    fileQw->show();
-    connect(fileQw, SIGNAL(sendData(QString)),this, SLOT(on_listView_receivedData(QString)));
+    QFileDialog *fileDialog = new QFileDialog(this);
+    QString path = fileDialog->getOpenFileName(this, tr("Open File"),
+                                "/Qt",
+                                tr("Text files (*.txt)"));
+    on_listView_receivedData(path);
 }
 
 
@@ -65,19 +72,22 @@ void MainWindow::loadFile(){
 
 void MainWindow::on_otherSave_clicked()
 {
-    otherSave *os = new otherSave();
-    os->show();
-    connect(os,SIGNAL(sendNameData(QString)),this, SLOT(on_listView_receivedNameData(QString)));
-
+//    otherSave *os = new otherSave();
+//    os->show();
+//    connect(os,SIGNAL(sendNameData(QString)),this, SLOT(on_listView_receivedNameData(QString)));
+    QFileDialog *fileDialog = new QFileDialog(this);
+    QString path = fileDialog->getSaveFileName(this, tr("Save File"),
+                                QDir::currentPath(),
+                                tr("Text files (*.txt);;XML files (*.xml)"));
+    on_listView_receivedNameData(path);
 }
 
 void MainWindow::on_listView_receivedNameData(QString string){
-    this->fileName = "/Users/MiniYoga/Documents/QT/Qt/2017_6_12_Note/text/"+string+".txt";
+    //this->fileName = "/Users/MiniYoga/Documents/QT/Qt/2017_6_12_Note/text/"+string+".txt";
 
-    QFile file(this->fileName);
+    QFile file(string);
     file.open(QIODevice::WriteOnly);
     file.close();
-
     if(file.open(QIODevice::WriteOnly|QIODevice::Text)){
         QTextStream outStream(&file);
         outStream<<ui->textEdit->toPlainText()<<endl;

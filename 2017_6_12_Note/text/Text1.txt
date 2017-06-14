@@ -2,3 +2,4 @@ QMainWindow、QWidget、QDialog 三个类就是用来创建窗口的，可以直接使用也可以继承后
 
 
 
+
