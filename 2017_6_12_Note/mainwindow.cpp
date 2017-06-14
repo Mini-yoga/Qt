@@ -44,7 +44,7 @@ void MainWindow::on_pushButton_clicked()
 
     QFileDialog *fileDialog = new QFileDialog(this);
     QString path = fileDialog->getOpenFileName(this, tr("Open File"),
-                                "/Qt",
+                                "/",
                                 tr("Text files (*.txt)"));
     on_listView_receivedData(path);
 }
